@@ -5,7 +5,9 @@ import java.util.List;
 
 /**
  * Bevat de vereisten om Dijkstra's algoritme op een graaf met als nodes
- * objecten van een implementerend type los te laten.
+ * objecten van een implementerend type los te laten. Merk op dat het
+ * feitelijk zijn van een node in een graaf een kwestie van privates is,
+ * en dus niet hier wordt afgedwongen.
  * @author Sal
  *
  * @param <N> Het type van een node
@@ -21,10 +23,13 @@ public interface Dijkstrabaar<N,D> extends Comparable<N>{
 	void dijkstrareset();
 	
 	/**
-	 * TODO: vul JavaDoc in
-	 * @param verkenner 
-	 * @param viaAfstand
-	 * @param verkend
+	 * Controleert of deze node via de node die nu bezocht wordt sneller te
+	 * bereiken is dan via de huidige route
+	 * @param verkenner de node die nu bezocht wordt
+	 * @param viaAfstand de afstand naar deze node, via de verkenner
+	 * @param verkend de verzameling nodes waar verken minstens eens op is
+	 * aanroepen, maar die niet bezocht zijn. Hier voegt de node zich aan
+	 * toe als hij er nog niet in staat en niet bezocht is
 	 */
 	void verken(N verkenner, D viaAfstand, Collection<N> verkend);
 	
