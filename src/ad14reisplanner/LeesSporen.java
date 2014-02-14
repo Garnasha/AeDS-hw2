@@ -31,6 +31,7 @@ public class LeesSporen
         sporen = new ArrayList<int[]>();
 
         int stations = scanner.nextInt();
+        aantalStations= stations;
         System.out.println("Dit netwerk heeft " + stations + " stations");
         scanner.nextLine();
         
@@ -44,7 +45,8 @@ public class LeesSporen
             System.out.println("Er is een spoor " + s + " van " + van +
                                " naar " + naar + " met lengte " + afstand);
             sporen.add(spoor);
-            scanner.nextLine();
+            if(scanner.hasNextLine())
+            	scanner.nextLine();
             
         }
         scanner.close();

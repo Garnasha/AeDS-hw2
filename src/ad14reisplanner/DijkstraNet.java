@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Houdt een Dictionary bij met nodes en hun naam voor de buitenwereld.
@@ -33,11 +34,16 @@ public class DijkstraNet<K,N extends Dijkstrabaar<N,D>,D>{
 		vertrekpunt = null; 
 	}
 	
+	public Set<K> keySet(){
+		return nodes.keySet();
+	}
+	
 	public N getNode(K key){
 		return nodes.get(key);
 	}
 	
 	public void put(K key,N node){
+		System.out.println("newentry:" + key.toString() + "->" + node.toString());
 		nodes.put(key, node);
 	}
 	
@@ -49,7 +55,7 @@ public class DijkstraNet<K,N extends Dijkstrabaar<N,D>,D>{
 		verkend = new HashSet<N>(nodes.size());
 		//zet de nieuwe zoektocht op
 		vertrekpunt = van;
-		nodes.get(van).dijkstrastart();
+		van.dijkstrastart();
 		verkend.add(van);
 	}
 	
@@ -67,6 +73,7 @@ public class DijkstraNet<K,N extends Dijkstrabaar<N,D>,D>{
 		N volgende = Collections.min(verkend);
 		while (volgende != doel){
 			volgende.bezoek(verkend);
+			bezocht.add(volgende);
 			if(verkend.isEmpty()) return;//doel is niet bereikbaar
 			volgende = Collections.min(verkend);
 		}

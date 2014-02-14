@@ -96,6 +96,9 @@ public class Station
 		ArrayList<Station> trace = voorloper.route();
 		trace.add(this);
 		return trace;
-		
+	}
+	
+	public String toString(){
+		return "Station nr. " + Integer.toString(nummer);
 	}
 }
