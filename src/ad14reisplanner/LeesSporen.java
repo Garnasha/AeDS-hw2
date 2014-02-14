@@ -14,8 +14,10 @@ import java.util.Scanner;
  */
 public class LeesSporen
 {
-	ArrayList<int[]> sporen;
-    /**
+	private ArrayList<int[]> sporen;
+	private int aantalStations;
+    
+	/**
      * Constructor leest de file en zal de informatie afdrukken ter controle
      * @param fileName de naam van de file met verbindingen tussen stattions
      * @throws java.lang.Exception als er iets fout gaat met openen of lezen van de file
@@ -46,5 +48,14 @@ public class LeesSporen
             
         }
         scanner.close();
+        
+        
+    }
+    public ArrayList<int[]> getSporen(){
+		return sporen;
+    }
+	
+    public int getAantalStations(){
+    	return aantalStations;
     }
 }

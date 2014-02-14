@@ -1,7 +1,8 @@
 package ad14reisplanner;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Een Stationklasse, compleet met 
@@ -45,7 +46,7 @@ public class Station
 	/**
 	 *  herstelt dit station naar de begintoestand voor Dijkstra's algoritme
 	 */
-	public void reset(){
+	public void dijkstrareset(){
 		afstand = Integer.MAX_VALUE;
 		voorloper = null;
 		bezocht = false;
@@ -55,18 +56,18 @@ public class Station
 		kanten.add(new Verbinding(naar,ver));
 	}
 	
-	public void bezoek(HashSet<Station> verkend){
+	public void bezoek(Collection<Station> verkend){
 		for(Verbinding i : kanten){
 			if(!verkend.contains(i)) verkend.add(i.bestemming);
-			i.bestemming.verken(this,i.lengte,verkend);
+			i.bestemming.verken(this,i.lengte + afstand,verkend);
 		}
 	}
 	
-	public void verken(Station ref, int lengte, HashSet<Station> verkend) {
+	public void verken(Station verkenner, Integer viaAfstand, Collection<Station> verkend) {
 		if(bezocht) return;
-		if(ref.getAfstand() + lengte < afstand){
-			voorloper = ref;
-			afstand = ref.getAfstand() + lengte;
+		if(viaAfstand < afstand){
+			voorloper = verkenner;
+			afstand = viaAfstand;
 		}
 	}
 	
@@ -81,6 +82,17 @@ public class Station
 	public int getID(){
 		return nummer;
 	}
+	@Override
+	public void dijkstrastart() {
+		dijkstrareset();
+		afstand = 0;
+	}
 	
-	
+	public ArrayList<Station> route(){
+		if(voorloper == null) return new ArrayList<Station>();
+		ArrayList<Station> trace = voorloper.route();
+		trace.add(this);
+		return trace;
+		
+	}
 }
