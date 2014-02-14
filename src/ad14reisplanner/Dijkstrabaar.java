@@ -40,7 +40,7 @@ public interface Dijkstrabaar<N,D> extends Comparable<N>{
 	 * Ongedefinieerd gedrag als een node wordt bezocht die niet de kortste
 	 * voorlopige afstand naar de start heeft van alle niet-bezochte nodes.
 	 * @param verkend : de verzameling nodes waarvoor een afstand geschat
-	 * maar niet definitief bekend is.
+	 * maar niet definitief bekend is. Hier haalt de node zichzelf uit.
 	 */
 	void bezoek(Collection<N> verkend);
 	

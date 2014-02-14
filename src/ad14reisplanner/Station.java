@@ -2,7 +2,7 @@ package ad14reisplanner;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 
 /**
  * Een Stationklasse, compleet met 
@@ -34,13 +34,13 @@ public class Station
 		}
 	};
 	
-	private ArrayList<Verbinding> kanten;
+	private HashSet<Verbinding> kanten;
 	
 	public Station(int id){
 		nummer = id;
 		afstand = Integer.MAX_VALUE; //Chosen as INF
 		voorloper = null;
-		kanten = new ArrayList<Verbinding>();
+		kanten = new HashSet<Verbinding>();
 		bezocht = false;
 	}
 	/**
@@ -58,9 +58,11 @@ public class Station
 	
 	public void bezoek(Collection<Station> verkend){
 		for(Verbinding i : kanten){
-			if(!verkend.contains(i)) verkend.add(i.bestemming);
 			i.bestemming.verken(this,i.lengte + afstand,verkend);
 		}
+		verkend.remove(this);
+		bezocht = true;
+		return;
 	}
 	
 	public void verken(Station verkenner, Integer viaAfstand, Collection<Station> verkend) {
@@ -69,6 +71,7 @@ public class Station
 			voorloper = verkenner;
 			afstand = viaAfstand;
 		}
+		if(!verkend.contains(this)) verkend.add(this);
 	}
 	
 	public int compareTo(Station ander) {

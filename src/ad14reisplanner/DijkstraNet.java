@@ -1,6 +1,6 @@
 package ad14reisplanner;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,27 +28,34 @@ public class DijkstraNet<K,N extends Dijkstrabaar<N,D>,D>{
 	
 	public DijkstraNet(int cap){
 		nodes = new HashMap<K,N>(cap);
-		bezocht = new HashSet<>(cap);
+		bezocht = new HashSet<N>(cap);
 		verkend = new HashSet<N>(cap);
 		vertrekpunt = null; 
+	}
+	
+	public N getNode(K key){
+		return nodes.get(key);
 	}
 	
 	public void put(K key,N node){
 		nodes.put(key, node);
 	}
 	
-	private void dijkstrasetup(N van,N naar){
+	private void dijkstrasetup(N van){
+		//wis enige eerdere zoektocht
+		for(N i : bezocht) i.dijkstrareset();
 		for(N i : verkend) i.dijkstrareset();
 		bezocht = new HashSet<N>(nodes.size());
 		verkend = new HashSet<N>(nodes.size());
+		//zet de nieuwe zoektocht op
 		vertrekpunt = van;
 		nodes.get(van).dijkstrastart();
 		verkend.add(van);
 	}
 	
 	public List<N> route(K van,K naar){
-		if(!(vertrekpunt == nodes.get(van))){
-			dijkstrasetup(nodes.get(van),nodes.get(naar));
+		if(vertrekpunt != nodes.get(van)){
+			dijkstrasetup(nodes.get(van));
 		}
 		if(!bezocht.contains(nodes.get(naar))){
 			dijkstraZoekTot(nodes.get(naar));
@@ -57,7 +64,14 @@ public class DijkstraNet<K,N extends Dijkstrabaar<N,D>,D>{
 	}
 
 	private void dijkstraZoekTot(N doel) {
-		// TODO Auto-generated method stub
-		
+		N volgende = Collections.min(verkend);
+		while (volgende != doel){
+			volgende.bezoek(verkend);
+			if(verkend.isEmpty()) return;//doel is niet bereikbaar
+			volgende = Collections.min(verkend);
+		}
+		//zoektocht klaar, bezoek volgende(==doel) nog om vlaggen goed te zetten.
+		volgende.bezoek(verkend);
+		return;
 	}
 }
